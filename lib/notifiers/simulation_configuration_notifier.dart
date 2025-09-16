@@ -21,7 +21,7 @@ class SimulationConfigurationNotifier
     double? so,
     double? sa,
     double? ra,
-  }) => state.copyWith(
+  }) => state = state.copyWith(
     mapSize: mapSize ?? state.mapSize,
     nbAgents: nbAgents ?? state.nbAgents,
     depT: depT ?? state.depT,
