@@ -26,7 +26,7 @@ class NumericTextFormField extends ConsumerWidget {
             if (value == null) return;
             onFieldSubmitted((value - 1).toString());
           },
-          icon: Icon(Icons.remove),
+          icon: const Icon(Icons.remove),
           iconSize: 18,
         ),
         SizedBox(
@@ -37,9 +37,8 @@ class NumericTextFormField extends ConsumerWidget {
             textAlign: TextAlign.center,
             onEditingComplete: () {},
             keyboardType: TextInputType.number,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               border: OutlineInputBorder(),
-              // isCollapsed: true, // supprime la hauteur/padding par défaut
               contentPadding: EdgeInsets.zero,
             ),
             onFieldSubmitted: onFieldSubmitted,
@@ -52,7 +51,7 @@ class NumericTextFormField extends ConsumerWidget {
             if (value == null) return;
             onFieldSubmitted((value + 1).toString());
           },
-          icon: Icon(Icons.add),
+          icon: const Icon(Icons.add),
           iconSize: 18,
         ),
       ],

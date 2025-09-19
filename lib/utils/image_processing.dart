@@ -6,7 +6,7 @@ Future<ui.Image> generateImageFromPixels({
   required Uint8List colouredPixels,
   required ui.Offset mapSize,
 }) {
-  Completer<ui.Image> completer = Completer();
+  final Completer<ui.Image> completer = Completer();
 
   ui.decodeImageFromPixels(
     colouredPixels,

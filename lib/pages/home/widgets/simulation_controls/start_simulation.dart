@@ -1,6 +1,6 @@
+import 'package:blob_simulator/notifiers/simulation_controller_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:blob_simulator/notifiers/simulation_controller_notifier.dart';
 
 class StartSimulation extends ConsumerWidget {
   const StartSimulation({super.key});
@@ -18,16 +18,16 @@ class StartSimulation extends ConsumerWidget {
         if (simulationState.isRunning)
           ElevatedButton(
             onPressed: () => simulationControllerNotifier.stop(),
-            child: Text("Stop simulation"),
+            child: const Text("Stop simulation"),
           )
         else
           ElevatedButton(
             onPressed: () => simulationControllerNotifier.play(),
-            child: Text("Start simulation"),
+            child: const Text("Start simulation"),
           ),
         ElevatedButton(
           onPressed: () => simulationControllerNotifier.reset(),
-          child: Text("Reset simulation"),
+          child: const Text("Reset simulation"),
         ),
       ],
     );

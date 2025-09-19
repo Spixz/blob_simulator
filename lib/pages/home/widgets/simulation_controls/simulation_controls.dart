@@ -46,7 +46,7 @@ class SimulationControls extends ConsumerWidget {
 
     return Column(
       children: [
-        ParameterTitle("Map size (width, height)"),
+        const ParameterTitle("Map size (width, height)"),
         Row(
           children: [
             Expanded(
@@ -96,21 +96,19 @@ class SimulationControls extends ConsumerWidget {
 
     return Column(
       children: [
-        ParameterTitle("Number of agents", fontSize: 15),
-        Container(
-          child: NumericTextFormField(
-            initialValue: simulationConfiguration.nbAgents,
-            onFieldSubmitted: (value) {
-              final nbAgents = int.tryParse(value.trim());
+        const ParameterTitle("Number of agents", fontSize: 15),
+        NumericTextFormField(
+          initialValue: simulationConfiguration.nbAgents,
+          onFieldSubmitted: (value) {
+            final nbAgents = int.tryParse(value.trim());
 
-              if (nbAgents == null || nbAgents < 1) return;
-              ref
-                  .read(simulationConfigurationProvider.notifier)
-                  .set(nbAgents: nbAgents);
-            },
-          ),
+            if (nbAgents == null || nbAgents < 1) return;
+            ref
+                .read(simulationConfigurationProvider.notifier)
+                .set(nbAgents: nbAgents);
+          },
         ),
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
       ],
     );
   }
@@ -120,21 +118,20 @@ class SimulationControls extends ConsumerWidget {
 
     return Column(
       children: [
-        ParameterTitle("Chemoattractant deposit per step (depT)", fontSize: 15),
-        Container(
-          child: NumericTextFormField(
-            initialValue: simulationConfiguration.depT,
-            onFieldSubmitted: (value) {
-              final depT = double.tryParse(value.trim());
-
-              if (depT == null || depT <= 0) return;
-              ref
-                  .read(simulationConfigurationProvider.notifier)
-                  .set(depT: depT);
-            },
-          ),
+        const ParameterTitle(
+          "Chemoattractant deposit per step (depT)",
+          fontSize: 15,
         ),
-        SizedBox(height: 10),
+        NumericTextFormField(
+          initialValue: simulationConfiguration.depT,
+          onFieldSubmitted: (value) {
+            final depT = double.tryParse(value.trim());
+
+            if (depT == null || depT <= 0) return;
+            ref.read(simulationConfigurationProvider.notifier).set(depT: depT);
+          },
+        ),
+        const SizedBox(height: 10),
       ],
     );
   }
@@ -144,19 +141,20 @@ class SimulationControls extends ConsumerWidget {
 
     return Column(
       children: [
-        ParameterTitle("Distance per agent step in pixel (ss)", fontSize: 15),
-        Container(
-          child: NumericTextFormField(
-            initialValue: simulationConfiguration.ss,
-            onFieldSubmitted: (value) {
-              final ss = double.tryParse(value.trim());
-
-              if (ss == null || ss < 1) return;
-              ref.read(simulationConfigurationProvider.notifier).set(ss: ss);
-            },
-          ),
+        const ParameterTitle(
+          "Distance per agent step in pixel (ss)",
+          fontSize: 15,
         ),
-        SizedBox(height: 10),
+        NumericTextFormField(
+          initialValue: simulationConfiguration.ss,
+          onFieldSubmitted: (value) {
+            final ss = double.tryParse(value.trim());
+
+            if (ss == null || ss < 1) return;
+            ref.read(simulationConfigurationProvider.notifier).set(ss: ss);
+          },
+        ),
+        const SizedBox(height: 10),
       ],
     );
   }
@@ -166,19 +164,17 @@ class SimulationControls extends ConsumerWidget {
 
     return Column(
       children: [
-        ParameterTitle("Sensor offset distance (so)", fontSize: 15),
-        Container(
-          child: NumericTextFormField(
-            initialValue: simulationConfiguration.so,
-            onFieldSubmitted: (value) {
-              final so = double.tryParse(value.trim());
+        const ParameterTitle("Sensor offset distance (so)", fontSize: 15),
+        NumericTextFormField(
+          initialValue: simulationConfiguration.so,
+          onFieldSubmitted: (value) {
+            final so = double.tryParse(value.trim());
 
-              if (so == null || so < 1) return;
-              ref.read(simulationConfigurationProvider.notifier).set(so: so);
-            },
-          ),
+            if (so == null || so < 1) return;
+            ref.read(simulationConfigurationProvider.notifier).set(so: so);
+          },
         ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
       ],
     );
   }
@@ -188,19 +184,17 @@ class SimulationControls extends ConsumerWidget {
 
     return Column(
       children: [
-        ParameterTitle("Sensor angle for FL and FR (sa)", fontSize: 15),
-        Container(
-          child: NumericTextFormField(
-            initialValue: simulationConfiguration.sa,
-            onFieldSubmitted: (value) {
-              final sa = double.tryParse(value.trim());
+        const ParameterTitle("Sensor angle for FL and FR (sa)", fontSize: 15),
+        NumericTextFormField(
+          initialValue: simulationConfiguration.sa,
+          onFieldSubmitted: (value) {
+            final sa = double.tryParse(value.trim());
 
-              if (sa == null || sa < 0 || sa > 360) return;
-              ref.read(simulationConfigurationProvider.notifier).set(sa: sa);
-            },
-          ),
+            if (sa == null || sa < 0 || sa > 360) return;
+            ref.read(simulationConfigurationProvider.notifier).set(sa: sa);
+          },
         ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
       ],
     );
   }
@@ -210,19 +204,17 @@ class SimulationControls extends ConsumerWidget {
 
     return Column(
       children: [
-        ParameterTitle("Agent rotation angle (ra)", fontSize: 15),
-        Container(
-          child: NumericTextFormField(
-            initialValue: simulationConfiguration.ra,
-            onFieldSubmitted: (value) {
-              final ra = double.tryParse(value.trim());
+        const ParameterTitle("Agent rotation angle (ra)", fontSize: 15),
+        NumericTextFormField(
+          initialValue: simulationConfiguration.ra,
+          onFieldSubmitted: (value) {
+            final ra = double.tryParse(value.trim());
 
-              if (ra == null || ra < 0 || ra > 360) return;
-              ref.read(simulationConfigurationProvider.notifier).set(ra: ra);
-            },
-          ),
+            if (ra == null || ra < 0 || ra > 360) return;
+            ref.read(simulationConfigurationProvider.notifier).set(ra: ra);
+          },
         ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
       ],
     );
   }

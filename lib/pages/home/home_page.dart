@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:blob_simulator/pages/home/widgets/simulation_controls/simulation_controls.dart';
 import 'package:blob_simulator/pages/home/widgets/simulation_viewer.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});

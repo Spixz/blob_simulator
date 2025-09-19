@@ -1,12 +1,11 @@
 import 'dart:async';
 import 'dart:isolate';
 
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:blob_simulator/blob_simulation/blob_simulation.dart';
 import 'package:blob_simulator/notifiers/generated_image_notifier.dart';
 import 'package:blob_simulator/notifiers/simulation_configuration_notifier.dart';
 import 'package:blob_simulator/utils/image_processing.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final simulationControllerProvider =
     NotifierProvider<SimulationControllerNotifier, SimulationInformations>(
@@ -34,7 +33,6 @@ class SimulationControllerNotifier extends Notifier<SimulationInformations> {
         } else {
           simulationRun();
         }
-        ;
       }
       simulation?.configuration = conf;
     });
@@ -49,12 +47,12 @@ class SimulationControllerNotifier extends Notifier<SimulationInformations> {
   void play() {
     state = state.copyWith(isRunning: true);
     simTimer = Timer.periodic(
-      Duration(milliseconds: 10),
+      const Duration(milliseconds: 10),
       (_) => simulationRun(),
     );
   }
 
-  void simulationRun() async {
+  Future<void> simulationRun() async {
     if (simulationStepIsRunning) return;
 
     simulationStepIsRunning = true;
@@ -77,10 +75,10 @@ class SimulationControllerNotifier extends Notifier<SimulationInformations> {
 
   void reset() {
     stop();
-    Timer(Duration(milliseconds: 300), () => ref.invalidateSelf());
+    Timer(const Duration(milliseconds: 300), () => ref.invalidateSelf());
   }
 
-  get isSimulationRunning => state.isRunning;
+  bool get isSimulationRunning => state.isRunning;
 }
 
 class SimulationInformations {

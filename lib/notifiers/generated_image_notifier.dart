@@ -1,4 +1,6 @@
+// ignore_for_file: use_setters_to_change_properties
 import 'dart:ui' as ui;
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final generatedImageProvider = NotifierProvider(GeneratedImageNotifier.new);

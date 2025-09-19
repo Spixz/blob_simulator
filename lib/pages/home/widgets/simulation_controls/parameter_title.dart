@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ParameterTitle extends StatelessWidget {
-  const ParameterTitle(this.title, {double fontSize = 20}) : fontSize = fontSize;
+  const ParameterTitle(this.title, {this.fontSize = 20});
   final String title;
   final double fontSize;
 
@@ -13,7 +13,7 @@ class ParameterTitle extends StatelessWidget {
           title,
           style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.bold),
         ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
       ],
     );
   }

@@ -16,5 +16,5 @@ class Agent {
   );
 
   @override
-  String toString() => "${position} - ${direction}°";
+  String toString() => "$position - $direction°";
 }

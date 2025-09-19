@@ -1,11 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:math';
-import 'package:blob_simulator/blob_simulation/simulation_configuration.dart';
-import 'package:flutter/services.dart';
+
 import 'package:blob_simulator/blob_simulation/agent.dart';
+import 'package:blob_simulator/blob_simulation/simulation_configuration.dart';
 import 'package:blob_simulator/utils/extensions/num_extension.dart';
 import 'package:blob_simulator/utils/extensions/offset_extension.dart';
 import 'package:blob_simulator/utils/extensions/point_extension.dart';
+import 'package:flutter/services.dart';
 
 const bool kLogPerf = true;
 
@@ -34,7 +35,7 @@ class BlobSimulation {
   void motorStage() {
     final agentsRandIndexsOrder = generateRandListAgentIndexs();
 
-    for (int selectedAgentIndex in agentsRandIndexsOrder) {
+    for (final int selectedAgentIndex in agentsRandIndexsOrder) {
       final seletedAgent = agents[selectedAgentIndex];
       final Offset newPosition = Offset(
         seletedAgent.position.dx +
@@ -72,7 +73,7 @@ class BlobSimulation {
   void sensoryStage() {
     final agentsRandIndexsOrder = generateRandListAgentIndexs();
 
-    for (int selectedAgentIndex in agentsRandIndexsOrder) {
+    for (final int selectedAgentIndex in agentsRandIndexsOrder) {
       final seletedAgent = agents[selectedAgentIndex];
       double fValue = 0;
       double flValue = 0;
@@ -137,7 +138,7 @@ class BlobSimulation {
     final newTraceMap = traceMap.map((yRow) => yRow).toList();
     final traceMapCopy = [
       List.filled(configuration.mapSize.dx.toInt() + 2, 0.0),
-      ...traceMap.map((yRow) => [0.0, ...yRow, 0.0]).toList(),
+      ...traceMap.map((yRow) => [0.0, ...yRow, 0.0]),
       List.filled(configuration.mapSize.dx.toInt() + 2, 0.0),
     ];
 
@@ -185,7 +186,7 @@ class BlobSimulation {
       List.generate(configuration.nbAgents, (index) => index)..shuffle();
 
   Offset generateRandomAgentPosition({required Offset mapSize}) {
-    var rnd = Random();
+    final rnd = Random();
 
     return Offset(
       rnd.nextDouble() * (mapSize.dx - 1),
@@ -240,7 +241,7 @@ class BlobSimulation {
 
   void printTraceMap() {
     for (int y = 0; y < configuration.mapSize.dy; y++) {
-      print("${y} ${traceMap[y].map((x) => x.toStringAsFixed(2))}");
+      print("$y ${traceMap[y].map((x) => x.toStringAsFixed(2))}");
     }
   }
 }

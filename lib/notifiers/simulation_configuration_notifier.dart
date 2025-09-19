@@ -1,7 +1,8 @@
+// ignore_for_file: use_setters_to_change_properties
 import 'dart:ui';
 
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:blob_simulator/blob_simulation/simulation_configuration.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final simulationConfigurationProvider = NotifierProvider(
   SimulationConfigurationNotifier.new,
@@ -10,7 +11,7 @@ final simulationConfigurationProvider = NotifierProvider(
 class SimulationConfigurationNotifier
     extends Notifier<SimulationConfiguration> {
   @override
-  SimulationConfiguration build() => SimulationConfiguration();
+  SimulationConfiguration build() => const SimulationConfiguration();
 
   void set({
     Offset? mapSize,
