@@ -5,3 +5,5 @@ Flutter implementation of
 Artificial Life. 2010 Spring;16(2):127-153.
 
 ![Speed slow down by the gif](screenshoots/blob_simulator_demo.gif)
+
+*(Speed slow down by the gif)*
