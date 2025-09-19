@@ -16,6 +16,7 @@ class SimulationControllerNotifier extends Notifier<SimulationInformations> {
   Timer? simTimer;
   BlobSimulation? simulation;
   bool simulationStepIsRunning = false;
+  Object _simulationToken = Object();
 
   @override
   SimulationInformations build() {
@@ -27,20 +28,23 @@ class SimulationControllerNotifier extends Notifier<SimulationInformations> {
 
         if (isSimulationRunning) stop();
         simulation = BlobSimulation(configuration: conf);
+        _simulationToken = Object();
         simulation!.initSimulation();
         if (simulationWasRunning) {
           play();
         } else {
-          simulationRun();
+          Future.microtask(() => _simulationRun(_simulationToken));
         }
       }
+
       simulation?.configuration = conf;
     });
 
     final simulationConfiguration = ref.read(simulationConfigurationProvider);
     simulation = BlobSimulation(configuration: simulationConfiguration);
+    _simulationToken = Object();
     simulation!.initSimulation();
-    simulationRun();
+    Future.microtask(() => _simulationRun(_simulationToken));
     return SimulationInformations(isRunning: false);
   }
 
@@ -48,21 +52,31 @@ class SimulationControllerNotifier extends Notifier<SimulationInformations> {
     state = state.copyWith(isRunning: true);
     simTimer = Timer.periodic(
       const Duration(milliseconds: 10),
-      (_) => simulationRun(),
+      (_) => _simulationRun(_simulationToken),
     );
   }
 
-  Future<void> simulationRun() async {
+  Future<void> _simulationRun(Object token) async {
+    if (token != _simulationToken) return;
     if (simulationStepIsRunning) return;
 
     simulationStepIsRunning = true;
     simulation?.run();
 
     final pixels = await Isolate.run(simulation!.generatePixelsList);
+    if (token != _simulationToken) {
+      simulationStepIsRunning = false;
+      return;
+    }
+
     final image = await generateImageFromPixels(
       colouredPixels: pixels,
-      mapSize: ref.read(simulationConfigurationProvider).mapSize,
+      mapSize: simulation!.configuration.mapSize,
     );
+    if (token != _simulationToken) {
+      simulationStepIsRunning = false;
+      return;
+    }
 
     ref.read(generatedImageProvider.notifier).update(image);
     simulationStepIsRunning = false;
@@ -75,7 +89,8 @@ class SimulationControllerNotifier extends Notifier<SimulationInformations> {
 
   void reset() {
     stop();
-    Timer(const Duration(milliseconds: 300), () => ref.invalidateSelf());
+    simulationStepIsRunning = false;
+    ref.invalidateSelf();
   }
 
   bool get isSimulationRunning => state.isRunning;
