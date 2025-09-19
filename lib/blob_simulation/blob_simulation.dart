@@ -1,17 +1,13 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:math';
-import 'dart:developer' as dev;
 import 'package:blob_simulator/blob_simulation/simulation_configuration.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:blob_simulator/blob_simulation/agent.dart';
 import 'package:blob_simulator/utils/extensions/num_extension.dart';
 import 'package:blob_simulator/utils/extensions/offset_extension.dart';
 import 'package:blob_simulator/utils/extensions/point_extension.dart';
 
-
 const bool kLogPerf = true;
-
 
 class BlobSimulation {
   SimulationConfiguration configuration;
@@ -27,8 +23,8 @@ class BlobSimulation {
     agentsMap = initAgentsMap(mapSize: configuration.mapSize);
 
     // Place first agent trace on the map
-    for (int agentIndex = 0; agentIndex < agents.length; agentIndex++) {
-      final pos = agents[agentIndex].position.toGridPoint();
+    for (final agent in agents) {
+      final pos = agent.position.toGridPoint();
 
       traceMap[pos.y][pos.x] = configuration.depT;
       agentsMap[pos.y][pos.x] = true;
@@ -138,69 +134,55 @@ class BlobSimulation {
   }
 
   void diffusionStage() {
-    final result = traceMap.map((yRow) => yRow).toList();
-
+    final newTraceMap = traceMap.map((yRow) => yRow).toList();
     final traceMapCopy = [
-      List<double>.generate(configuration.mapSize.dx.toInt() + 2, (_) => 0),
+      List.filled(configuration.mapSize.dx.toInt() + 2, 0.0),
       ...traceMap.map((yRow) => [0.0, ...yRow, 0.0]).toList(),
-      List<double>.generate(configuration.mapSize.dx.toInt() + 2, (_) => 0),
+      List.filled(configuration.mapSize.dx.toInt() + 2, 0.0),
     ];
 
     for (int y = 1; y < configuration.mapSize.dy + 1; y++) {
       for (int x = 1; x < configuration.mapSize.dx + 1; x++) {
-        if (agentsMap[y - 1][x - 1]) continue;
+        final agentInCell = agentsMap[y - 1][x - 1];
+        if (agentInCell) continue;
+
+        final center = traceMapCopy[y][x];
+        final top = traceMapCopy[y - 1][x];
+        final bottom = traceMapCopy[y + 1][x];
+        final left = traceMapCopy[y][x - 1];
+        final right = traceMapCopy[y][x + 1];
+        final topLeft = traceMapCopy[y - 1][x - 1];
+        final topRight = traceMapCopy[y - 1][x + 1];
+        final bottomLeft = traceMapCopy[y + 1][x - 1];
+        final bottomRight = traceMapCopy[y + 1][x + 1];
 
         final averageValue =
-            (traceMapCopy[y][x] +
-                traceMapCopy[y - 1][x - 1] +
-                traceMapCopy[y - 1][x] +
-                traceMapCopy[y - 1][x + 1] +
-                traceMapCopy[y][x - 1] +
-                traceMapCopy[y][x + 1] +
-                traceMapCopy[y + 1][x - 1] +
-                traceMapCopy[y + 1][x] +
-                traceMapCopy[y + 1][x + 1]) /
+            (center +
+                top +
+                bottom +
+                left +
+                right +
+                topLeft +
+                topRight +
+                bottomLeft +
+                bottomRight) /
             9;
-        result[y - 1][x - 1] = averageValue * 0.9;
+
+        newTraceMap[y - 1][x - 1] = averageValue * 0.9;
       }
     }
 
-    traceMap = result;
+    traceMap = newTraceMap;
   }
 
   void run() {
-    final total = Stopwatch()..start();
-
-    final swMotor = Stopwatch()..start();
-    dev.Timeline.timeSync('motorStage', () {
-      motorStage();
-    });
-    swMotor.stop();
-
-    final swSensory = Stopwatch()..start();
-    dev.Timeline.timeSync('sensoryStage', () {
-      sensoryStage();
-    });
-    swSensory.stop();
-
-    final swDiff = Stopwatch()..start();
-    dev.Timeline.timeSync('diffusionStage', () {
-      diffusionStage();
-    });
-    swDiff.stop();
-
-    total.stop();
-
-    if (kLogPerf) {
-      debugPrint(
-        "[perf] motor=${swMotor.elapsedMilliseconds} ms, sensory=${swSensory.elapsedMilliseconds} ms, diffusion=${swDiff.elapsedMilliseconds} ms, total=${total.elapsedMilliseconds} ms",
-      );
-    }
+    motorStage();
+    sensoryStage();
+    diffusionStage();
   }
 
-  List<int> generateRandListAgentIndexs() {
-    return List.generate(configuration.nbAgents, (index) => index)..shuffle();
-  }
+  List<int> generateRandListAgentIndexs() =>
+      List.generate(configuration.nbAgents, (index) => index)..shuffle();
 
   Offset generateRandomAgentPosition({required Offset mapSize}) {
     var rnd = Random();
@@ -214,18 +196,13 @@ class BlobSimulation {
   double generateRandomAgentDirection() => Random().nextInt(361).toDouble();
 
   List<Agent> generateAgents(int nbAgents) {
-    final result = <Agent>[];
-
-    for (int i = 0; i < nbAgents; i++) {
-      result.add(
-        Agent(
-          position: generateRandomAgentPosition(mapSize: configuration.mapSize),
-          direction: generateRandomAgentDirection(),
-        ),
-      );
-    }
-
-    return result;
+    return List.generate(
+      nbAgents,
+      (_) => Agent(
+        position: generateRandomAgentPosition(mapSize: configuration.mapSize),
+        direction: generateRandomAgentDirection(),
+      ),
+    );
   }
 
   Uint8List generatePixelsList() {
@@ -246,20 +223,20 @@ class BlobSimulation {
   }
 
   List<List<double>> initTraceMap({required Offset mapSize}) {
-    final List<double> row = [for (int x = 0; x < mapSize.dx; x++) 0];
-
-    return [for (int y = 0; y < mapSize.dy; y++) row.toList()];
+    return List.generate(
+      mapSize.dy.toInt(),
+      (_) => List.filled(mapSize.dx.toInt(), 0),
+    );
   }
 
   List<List<bool>> initAgentsMap({required Offset mapSize}) {
-    final List<bool> row = [for (int x = 0; x < mapSize.dx; x++) false];
-
-    return [for (int y = 0; y < mapSize.dy; y++) row.toList()];
+    return List.generate(
+      mapSize.dy.toInt(),
+      (_) => List.filled(mapSize.dx.toInt(), false),
+    );
   }
 
-  void printAgents() {
-    agents.forEach((agent) => print(agent));
-  }
+  void printAgents() => agents.forEach(print);
 
   void printTraceMap() {
     for (int y = 0; y < configuration.mapSize.dy; y++) {

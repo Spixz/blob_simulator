@@ -18,8 +18,6 @@ class SimulationControllerNotifier extends Notifier<SimulationInformations> {
   BlobSimulation? simulation;
   bool simulationStepIsRunning = false;
 
-  get isSimulationRunning => state.isRunning;
-
   @override
   SimulationInformations build() {
     ref.listen(simulationConfigurationProvider, (prev, conf) {
@@ -28,11 +26,11 @@ class SimulationControllerNotifier extends Notifier<SimulationInformations> {
       if (conf.mapSize != prev.mapSize || conf.nbAgents != prev.nbAgents) {
         final simulationWasRunning = isSimulationRunning;
 
-        if (isSimulationRunning) this.stop();
+        if (isSimulationRunning) stop();
         simulation = BlobSimulation(configuration: conf);
         simulation!.initSimulation();
         if (simulationWasRunning) {
-          this.play();
+          play();
         } else {
           simulationRun();
         }
@@ -50,9 +48,10 @@ class SimulationControllerNotifier extends Notifier<SimulationInformations> {
 
   void play() {
     state = state.copyWith(isRunning: true);
-    simTimer = Timer.periodic(Duration(milliseconds: 10), (_) async {
-      simulationRun();
-    });
+    simTimer = Timer.periodic(
+      Duration(milliseconds: 10),
+      (_) => simulationRun(),
+    );
   }
 
   void simulationRun() async {
@@ -77,10 +76,11 @@ class SimulationControllerNotifier extends Notifier<SimulationInformations> {
   }
 
   void reset() {
-    this.stop();
+    stop();
     Timer(Duration(milliseconds: 300), () => ref.invalidateSelf());
   }
 
+  get isSimulationRunning => state.isRunning;
 }
 
 class SimulationInformations {
@@ -88,7 +88,6 @@ class SimulationInformations {
 
   SimulationInformations({required this.isRunning});
 
-  SimulationInformations copyWith({bool? isRunning}) {
-    return SimulationInformations(isRunning: isRunning ?? this.isRunning);
-  }
+  SimulationInformations copyWith({bool? isRunning}) =>
+      SimulationInformations(isRunning: isRunning ?? this.isRunning);
 }

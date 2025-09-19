@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:blob_simulator/notifiers/generated_image_notifier.dart';
 
 class SimulationViewer extends ConsumerWidget {
-  SimulationViewer({super.key});
+  const SimulationViewer({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

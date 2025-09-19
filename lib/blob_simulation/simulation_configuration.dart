@@ -4,23 +4,21 @@ import 'dart:ui';
 class SimulationConfiguration {
   final Offset mapSize;
   final int nbAgents;
-  final double depT;
-  final double ss;
-  final double so;
-  final double sa;
-  final double ra;
+  final double depT; // Amount of chemoattractant deposited per step
+  final double ss; // Distance traveled by each agent per step (in pixels)
+  final double so; // Distance between the agent and its sensors
+  final double sa; // Sensor angle for left and right sensors (in degrees)
+  final double ra; // Rotation angle of the agent (in degrees)
 
   const SimulationConfiguration({
-    this.mapSize = const Offset(500, 500),
-    this.nbAgents = 5000,
-    this.depT = 5, // Chemoattractant deposit per step
-    this.ss = 1, // Distance per agent step in pixel
-    this.so = 9, // Sensor offset distance
-    this.sa = 22.5, // Sensor angle for FL and FR
-    this.ra = 45, // Agent rotation angle
+    this.mapSize = const Offset(300, 300),
+    this.nbAgents = 2000,
+    this.depT = 5,
+    this.ss = 1,
+    this.so = 9,
+    this.sa = 22.5,
+    this.ra = 45,
   });
-
-  int get totalPixels => mapSize.dx.toInt() * mapSize.dy.toInt();
 
   SimulationConfiguration copyWith({
     Offset? mapSize,
@@ -41,4 +39,6 @@ class SimulationConfiguration {
       ra: ra ?? this.ra,
     );
   }
+
+  int get totalPixels => mapSize.dx.toInt() * mapSize.dy.toInt();
 }

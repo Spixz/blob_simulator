@@ -12,7 +12,6 @@ class SimulationConfigurationNotifier
   @override
   SimulationConfiguration build() => SimulationConfiguration();
 
-  void update(SimulationConfiguration value) => state = value;
   void set({
     Offset? mapSize,
     int? nbAgents,
@@ -21,13 +20,16 @@ class SimulationConfigurationNotifier
     double? so,
     double? sa,
     double? ra,
-  }) => state = state.copyWith(
-    mapSize: mapSize ?? state.mapSize,
-    nbAgents: nbAgents ?? state.nbAgents,
-    depT: depT ?? state.depT,
-    ss: ss ?? state.ss,
-    so: so ?? state.so,
-    sa: sa ?? state.sa,
-    ra: ra ?? state.ra,
-  );
+  }) =>
+      state = state.copyWith(
+        mapSize: mapSize ?? state.mapSize,
+        nbAgents: nbAgents ?? state.nbAgents,
+        depT: depT ?? state.depT,
+        ss: ss ?? state.ss,
+        so: so ?? state.so,
+        sa: sa ?? state.sa,
+        ra: ra ?? state.ra,
+      );
+
+  void update(SimulationConfiguration value) => state = value;
 }

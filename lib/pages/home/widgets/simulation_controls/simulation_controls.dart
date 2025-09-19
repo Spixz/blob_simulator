@@ -6,14 +6,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SimulationControls extends ConsumerWidget {
-  SimulationControls({super.key});
+  const SimulationControls({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final simulationConfiguration = ref.watch(simulationConfigurationProvider);
+    ref.watch(simulationConfigurationProvider);
 
-    return SizedBox(
+    return Container(
       width: 370,
+      decoration: BoxDecoration(color: Colors.yellow.shade200),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
         child: Column(
@@ -29,7 +30,6 @@ class SimulationControls extends ConsumerWidget {
                   _sensorOffset(ref),
                   _sensorAngle(ref),
                   _rotationAgentAngle(ref),
-                  // CircularProgressIndicator(),
                 ],
               ),
             ),
@@ -46,7 +46,7 @@ class SimulationControls extends ConsumerWidget {
 
     return Column(
       children: [
-        ParameterTitle("Map size"),
+        ParameterTitle("Map size (width, height)"),
         Row(
           children: [
             Expanded(
@@ -55,7 +55,6 @@ class SimulationControls extends ConsumerWidget {
                 onFieldSubmitted: (value) {
                   final width = int.tryParse(value.trim());
 
-                  print("new val ${width}");
                   if (width == null || width == 0) return;
 
                   final updatedSize = Offset(
@@ -74,7 +73,6 @@ class SimulationControls extends ConsumerWidget {
                 onFieldSubmitted: (value) {
                   final height = int.tryParse(value.trim());
 
-                  print("new val ${height}");
                   if (height == null || height == 0) return;
 
                   final updatedSize = Offset(
@@ -146,7 +144,7 @@ class SimulationControls extends ConsumerWidget {
 
     return Column(
       children: [
-        ParameterTitle("Distance per agent step in pixel", fontSize: 15),
+        ParameterTitle("Distance per agent step in pixel (ss)", fontSize: 15),
         Container(
           child: NumericTextFormField(
             initialValue: simulationConfiguration.ss,
@@ -168,7 +166,7 @@ class SimulationControls extends ConsumerWidget {
 
     return Column(
       children: [
-        ParameterTitle("Sensor offset distance", fontSize: 15),
+        ParameterTitle("Sensor offset distance (so)", fontSize: 15),
         Container(
           child: NumericTextFormField(
             initialValue: simulationConfiguration.so,
@@ -190,7 +188,7 @@ class SimulationControls extends ConsumerWidget {
 
     return Column(
       children: [
-        ParameterTitle("Sensor angle for FL and FR", fontSize: 15),
+        ParameterTitle("Sensor angle for FL and FR (sa)", fontSize: 15),
         Container(
           child: NumericTextFormField(
             initialValue: simulationConfiguration.sa,
@@ -212,7 +210,7 @@ class SimulationControls extends ConsumerWidget {
 
     return Column(
       children: [
-        ParameterTitle("Agent rotation angle", fontSize: 15),
+        ParameterTitle("Agent rotation angle (ra)", fontSize: 15),
         Container(
           child: NumericTextFormField(
             initialValue: simulationConfiguration.ra,
@@ -229,10 +227,3 @@ class SimulationControls extends ConsumerWidget {
     );
   }
 }
-
-
-// this.depT = 5, // Chemoattractant deposit per step
-// this.ss = 1, // Distance per agent step in pixel
-// this.so = 9, // Sensor offset distance
-// this.sa = 22.5, // Sensor angle for FL and FR
-// this.ra = 45, // Agent rotation angle

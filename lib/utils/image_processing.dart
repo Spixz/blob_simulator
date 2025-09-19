@@ -13,9 +13,8 @@ Future<ui.Image> generateImageFromPixels({
     mapSize.dx.toInt(),
     mapSize.dy.toInt(),
     ui.PixelFormat.rgba8888,
-    (generatedImage) {
-      completer.complete(generatedImage as FutureOr<ui.Image>);
-    },
+    (generatedImage) =>
+        completer.complete(generatedImage as FutureOr<ui.Image>),
   );
 
   return completer.future;

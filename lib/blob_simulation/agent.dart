@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:math';
 import 'dart:ui';
 
@@ -8,20 +7,14 @@ class Agent {
 
   const Agent({required this.position, required this.direction});
 
-  Point<int> convertToContinuousCoordinates() {
-    return Point(position.dx.round(), position.dy.round());
-  }
+  Point<int> convertToContinuousCoordinates() =>
+      Point(position.dx.round(), position.dy.round());
+
+  Agent copyWith({Offset? position, double? direction}) => Agent(
+    position: position ?? this.position,
+    direction: direction ?? this.direction,
+  );
 
   @override
   String toString() => "${position} - ${direction}°";
-
-  Agent copyWith({
-    Offset? position,
-    double? direction,
-  }) {
-    return Agent(
-      position: position ?? this.position,
-      direction: direction ?? this.direction,
-    );
-  }
 }

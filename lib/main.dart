@@ -3,8 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:blob_simulator/pages/home/home_page.dart';
 
 void main() {
-  // runApp(ProviderScope(observers: [Observer()], child: MyApp()));
-  runApp(ProviderScope(child: MyApp()));
+  runApp(ProviderScope(observers: [/*Observer()*/], child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -13,27 +12,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Blob Simulator',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.yellow),
       ),
       home: const HomePage(),
     );
-  }
-}
-
-final class Observer extends ProviderObserver {
-  @override
-  void didUpdateProvider(
-    ProviderObserverContext context,
-    Object? previousValue,
-    Object? newValue,
-  ) {
-    print('''
-{
-  "provider": "${context.provider}",
-  "newValue": "$newValue",
-  "mutation": "${context.mutation}"
-}''');
   }
 }

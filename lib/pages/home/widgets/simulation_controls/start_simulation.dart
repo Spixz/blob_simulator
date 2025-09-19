@@ -23,7 +23,7 @@ class StartSimulation extends ConsumerWidget {
         else
           ElevatedButton(
             onPressed: () => simulationControllerNotifier.play(),
-            child: Text("Play simulation"),
+            child: Text("Start simulation"),
           ),
         ElevatedButton(
           onPressed: () => simulationControllerNotifier.reset(),
